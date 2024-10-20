@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Emotion Prediction</title>
+</head>
+<body>
+    <h1>Speech Emotion Prediction</h1>
+    <input type="file" id="audioFile">
+    <button onclick="predictEmotion()">Predict Emotion</button>
+    <div id="result"></div>
+
+    <script>
+        function predictEmotion() {
+            const fileInput = document.getElementById('audioFile');
+            const audioFile = fileInput.files[0];
+
+            const formData = new FormData();
+            formData.append('file', audioFile);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Predicted Emotion: ${data.emotion}`;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
